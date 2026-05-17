@@ -128,6 +128,51 @@
   .exp-content .exp-company { font-size: 0.9rem; color: var(--muted); margin-bottom: 0.6rem; }
   .exp-content p { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
 
+  /* PROJECT TABS */
+  .project-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .tab-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+    color: var(--muted);
+    background: none;
+    border: none;
+    padding: 0.75rem 1.4rem;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.2s;
+  }
+  .tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--fg);
+    transform: scaleX(0);
+    transition: transform 0.25s ease;
+  }
+  .tab-btn:hover { color: var(--fg); }
+  .tab-btn.active {
+    color: var(--fg);
+    font-weight: 500;
+  }
+  .tab-btn.active::after {
+    transform: scaleX(1);
+  }
+  .tab-panel {
+    display: none;
+  }
+  .tab-panel.active {
+    display: block;
+  }
+
   /* PROJECTS */
   .projects-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
   .project-card {
@@ -136,7 +181,15 @@
     background: var(--card-bg);
     padding: 2rem;
     transition: border-color 0.2s;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeUp 0.4s ease forwards;
   }
+  .project-card:nth-child(1) { animation-delay: 0s; }
+  .project-card:nth-child(2) { animation-delay: 0.06s; }
+  .project-card:nth-child(3) { animation-delay: 0.12s; }
+  .project-card:nth-child(4) { animation-delay: 0.18s; }
+  .project-card:nth-child(5) { animation-delay: 0.24s; }
   .project-card:hover { border-color: #999; }
   .project-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
   .project-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; margin-bottom: 1rem; }
@@ -149,7 +202,7 @@
     border-radius: 3px;
     color: var(--muted);
   }
-  .project-links { margin-top: 1rem; display: flex; gap: 1rem; }
+  .project-links { margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap; }
   .project-links a {
     font-family: 'DM Mono', monospace;
     font-size: 0.78rem;
@@ -336,6 +389,7 @@
     .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
     .nav-links { gap: 1.2rem; }
     .hero { min-height: 85vh; }
+    .tab-btn { padding: 0.65rem 0.9rem; font-size: 0.72rem; }
   }
 </style>
 </head>
@@ -405,147 +459,263 @@
 
 <section id="projects">
   <div class="section-label fade-in">Projects</div>
-  <div class="projects-grid">
 
-    <div class="project-card fade-in">
-      <div class="project-img">
-        <img src="images/projects/patient-journal.png" alt="Patient Journal Microservices System" onerror="this.parentElement.style.display='none'">
-      </div>
-      <h3>Patient Journal Microservices System</h3>
-      <p>Full-stack, secure medical records platform built as five independently deployable services. A Spring Boot clinical backend handles patient diagnoses and records; a Kafka-backed messaging service powers secure patient–clinician communication; a Node.js image service manages file uploads via Multer; and a Quarkus reactive search service provides fast lookups across records. A React 19 frontend ties it together, with authentication delegated to Keycloak through OIDC. Each service is containerized with Docker and orchestrated on KTH Cloud using Kubernetes.</p>
-      <div class="tags">
-        <span class="tag">Java</span>
-        <span class="tag">Spring Boot</span>
-        <span class="tag">Quarkus</span>
-        <span class="tag">Node.js</span>
-        <span class="tag">React</span>
-        <span class="tag">Kafka</span>
-        <span class="tag">Keycloak</span>
-        <span class="tag">Kubernetes</span>
-        <span class="tag">Docker</span>
-        <span class="tag">MySQL</span>
-      </div>
-      <div class="project-links">
-        <a href="https://github.com/HousienA/clinical-service" target="_blank">Clinical Backend →</a>
-        <a href="https://github.com/HousienA/Patient-journal-frontend" target="_blank">Frontend →</a>
-        <a href="https://github.com/HousienA/message-service" target="_blank">Messaging →</a>
-        <a href="https://github.com/HousienA/search-service" target="_blank">Search →</a>
-        <a href="https://github.com/HousienA/image-service" target="_blank">Images →</a>
-      </div>
-    </div>
-
-    <div class="project-card fade-in">
-      <div class="project-img">
-        <img src="images/projects/atla-substations.png" alt="ATLA Substation Monitoring" onerror="this.parentElement.style.display='none'">
-      </div>
-      <h3>ATLA — Substation Monitoring System</h3>
-      <p>Cloud-based monitoring system for simulated electrical substations, developed at KTH in partnership with Hitachi Energy. A Spring Boot simulator models AC devices (transformers, breakers, capacitor banks) and HVDC stations (monopolar and bipolar, with converters, valves, and reactors) and exposes live metrics in Prometheus format. Prometheus scrapes every 15 seconds, Grafana provides pre-provisioned dashboards, and a React frontend offers overview, per-device detail views, and historical charts. The whole stack runs under Docker Compose for one-command deployment.</p>
-      <div class="tags">
-        <span class="tag">Java</span>
-        <span class="tag">Spring Boot</span>
-        <span class="tag">Prometheus</span>
-        <span class="tag">Grafana</span>
-        <span class="tag">React</span>
-        <span class="tag">Docker Compose</span>
-      </div>
-      <div class="project-links">
-        <a href="https://github.com/HousienA/ATLA-MoniteringSubstations" target="_blank">GitHub →</a>
-      </div>
-    </div>
-
-    <div class="project-card fade-in">
-      <div class="project-img">
-        <img src="images/projects/workout-buddy.png" alt="WorkoutBuddy" onerror="this.parentElement.style.display='none'">
-      </div>
-      <h3>WorkoutBuddy</h3>
-      <p>Cross-platform fitness app for iOS, Android, and web, built with React Native and Expo Router. Users create and edit workout templates with customizable sets, reps, and weights, then run live sessions with an automatic rest timer and per-set logging. The analytics view breaks down weekly volume by muscle group and tracks progress over time using charts rendered via react-native-chart-kit. Offline-first persistence is handled through a dedicated StorageService on top of AsyncStorage, with hook-based view models keeping UI state predictable.</p>
-      <div class="tags">
-        <span class="tag">React Native</span>
-        <span class="tag">Expo</span>
-        <span class="tag">Expo Router</span>
-        <span class="tag">TypeScript</span>
-        <span class="tag">AsyncStorage</span>
-      </div>
-      <div class="project-links">
-        <a href="https://github.com/HousienA/WorkoutBuddy" target="_blank">GitHub →</a>
-      </div>
-    </div>
-
-        <div class="project-card fade-in">
-      <div class="project-img">
-        <img src="images/projects/auction-aspnet.png" alt="Auction Web Service" onerror="this.parentElement.style.display='none'">
-      </div>
-      <h3>Auction Web Service</h3>
-      <p>Online auction platform built with ASP.NET Core MVC and Razor Pages on .NET. Uses Entity Framework Core with two separate MySQL database contexts — one for auction domain data, one for ASP.NET Core Identity — keeping authentication concerns cleanly isolated from the business schema. Layered architecture separates controllers from services from a persistence abstraction (<code>IAuctionPersistence</code>, <code>IUserPersistence</code>), with AutoMapper handling DTO-to-entity translation and Identity requiring confirmed-account sign-in.</p>
-      <div class="tags">
-        <span class="tag">C#</span>
-        <span class="tag">ASP.NET Core</span>
-        <span class="tag">MVC</span>
-        <span class="tag">Entity Framework</span>
-        <span class="tag">MySQL</span>
-        <span class="tag">AutoMapper</span>
-      </div>
-      <div class="project-links">
-        <a href="https://github.com/HousienA/Auction-Webservice-AspNet" target="_blank">GitHub →</a>
-      </div>
-    </div>
-
-    <div class="project-card fade-in">
-      <div class="project-img">
-        <img src="images/projects/nback.png" alt="N-Back Cognitive Training App" onerror="this.parentElement.style.display='none'">
-      </div>
-      <h3>N-Back Cognitive Training App</h3>
-      <p>Android app implementing the N-back working-memory paradigm, where the player must identify whether the current stimulus matches the one shown N steps earlier. Built in Kotlin with Jetpack Compose and MVVM, with stimulus sequences generated in a native C library bridged through JNI — the Kotlin side calls out through a <code>JniBridge</code> shared library, and the C code handles sequence construction and match distribution. Supports visual and audio game modes (audio via SoundPool), with high scores persisted through Jetpack DataStore.</p>
-      <div class="tags">
-        <span class="tag">Kotlin</span>
-        <span class="tag">Jetpack Compose</span>
-        <span class="tag">C</span>
-        <span class="tag">JNI</span>
-        <span class="tag">DataStore</span>
-      </div>
-      <div class="project-links">
-        <a href="https://github.com/HousienA/NBack_AndroidApp" target="_blank">GitHub →</a>
-      </div>
-    </div>
-
-    <div class="project-card fade-in">
-      <div class="project-img">
-        <img src="images/projects/monkey-shooter.png" alt="MonkeyShooter Multiplayer Game" onerror="this.parentElement.style.display='none'">
-      </div>
-      <h3>MonkeyShooter</h3>
-      <p>Top-down arcade multiplayer shooter written from scratch in C with SDL2. A dedicated C server handles up to six simultaneous players over the network using SDL2_net, while the client renders sprites, text, and bullet physics through SDL2, SDL2_image, and SDL2_ttf. Shared game logic (characters, world, projectiles) lives in a common library used by both client and server, with build orchestrated through Makefiles targeting both Windows/MinGW and macOS.</p>
-      <div class="tags">
-        <span class="tag">C</span>
-        <span class="tag">SDL2</span>
-        <span class="tag">Networking</span>
-        <span class="tag">Multiplayer</span>
-        <span class="tag">Make</span>
-      </div>
-      <div class="project-links">
-        <a href="https://github.com/HousienA/MonkeyShooter" target="_blank">GitHub →</a>
-      </div>
-    </div>
-
-    <div class="project-card fade-in">
-      <div class="project-img">
-        <img src="images/projects/weather-app.png" alt="Weather App Android" onerror="this.parentElement.style.display='none'">
-      </div>
-      <h3>Weather App Android</h3>
-      <p>Native Android weather app in Kotlin with a clean MVVM architecture. Uses Retrofit to talk to the Open-Meteo forecast and geocoding APIs, mapping free-text place names to coordinates before fetching daily forecasts. Features include favorite locations, offline caching with a last-updated indicator, and graceful degradation across network-error, offline-with-cache, and offline-no-cache states. Organized as <code>data/remote</code>, <code>data/local</code>, <code>data/repository</code>, <code>domain</code>, and <code>ui</code> layers with a single source of truth in the repository.</p>
-      <div class="tags">
-        <span class="tag">Kotlin</span>
-        <span class="tag">MVVM</span>
-        <span class="tag">Retrofit</span>
-        <span class="tag">Coroutines</span>
-        <span class="tag">Open-Meteo</span>
-      </div>
-      <div class="project-links">
-        <a href="https://github.com/HousienA/WeatherAppAndroid" target="_blank">GitHub →</a>
-      </div>
-    </div>
-
-
+  <div class="project-tabs fade-in">
+    <button class="tab-btn active" data-tab="web-systems">Web & Systems</button>
+    <button class="tab-btn" data-tab="ml-ai">ML & AI</button>
+    <button class="tab-btn" data-tab="mobile">Mobile</button>
   </div>
+
+  <!-- ======================== WEB & SYSTEMS ======================== -->
+  <div class="tab-panel active" id="tab-web-systems">
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-img">
+          <img src="images/projects/patient-journal.png" alt="Patient Journal Microservices System" onerror="this.parentElement.style.display='none'">
+        </div>
+        <h3>Patient Journal Microservices System</h3>
+        <p>Full-stack, secure medical records platform built as five independently deployable services. A Spring Boot clinical backend handles patient diagnoses and records; a Kafka-backed messaging service powers secure patient–clinician communication; a Node.js image service manages file uploads via Multer; and a Quarkus reactive search service provides fast lookups across records. A React 19 frontend ties it together, with authentication delegated to Keycloak through OIDC. Each service is containerized with Docker and orchestrated on KTH Cloud using Kubernetes.</p>
+        <div class="tags">
+          <span class="tag">Java</span>
+          <span class="tag">Spring Boot</span>
+          <span class="tag">Quarkus</span>
+          <span class="tag">Node.js</span>
+          <span class="tag">React</span>
+          <span class="tag">Kafka</span>
+          <span class="tag">Keycloak</span>
+          <span class="tag">Kubernetes</span>
+          <span class="tag">Docker</span>
+          <span class="tag">MySQL</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/HousienA/clinical-service" target="_blank">Clinical Backend →</a>
+          <a href="https://github.com/HousienA/Patient-journal-frontend" target="_blank">Frontend →</a>
+          <a href="https://github.com/HousienA/message-service" target="_blank">Messaging →</a>
+          <a href="https://github.com/HousienA/search-service" target="_blank">Search →</a>
+          <a href="https://github.com/HousienA/image-service" target="_blank">Images →</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-img">
+          <img src="images/projects/atla-substations.png" alt="ATLA Substation Monitoring" onerror="this.parentElement.style.display='none'">
+        </div>
+        <h3>ATLA — Substation Monitoring System</h3>
+        <p>Cloud-based monitoring system for simulated electrical substations, developed at KTH in partnership with Hitachi Energy. A Spring Boot simulator models AC devices (transformers, breakers, capacitor banks) and HVDC stations (monopolar and bipolar, with converters, valves, and reactors) and exposes live metrics in Prometheus format. Prometheus scrapes every 15 seconds, Grafana provides pre-provisioned dashboards, and a React frontend offers overview, per-device detail views, and historical charts. The whole stack runs under Docker Compose for one-command deployment.</p>
+        <div class="tags">
+          <span class="tag">Java</span>
+          <span class="tag">Spring Boot</span>
+          <span class="tag">Prometheus</span>
+          <span class="tag">Grafana</span>
+          <span class="tag">React</span>
+          <span class="tag">Docker Compose</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/HousienA/ATLA-MoniteringSubstations" target="_blank">GitHub →</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-img">
+          <img src="images/projects/auction-aspnet.png" alt="Auction Web Service" onerror="this.parentElement.style.display='none'">
+        </div>
+        <h3>Auction Web Service</h3>
+        <p>Online auction platform built with ASP.NET Core MVC and Razor Pages on .NET. Uses Entity Framework Core with two separate MySQL database contexts — one for auction domain data, one for ASP.NET Core Identity — keeping authentication concerns cleanly isolated from the business schema. Layered architecture separates controllers from services from a persistence abstraction (<code>IAuctionPersistence</code>, <code>IUserPersistence</code>), with AutoMapper handling DTO-to-entity translation and Identity requiring confirmed-account sign-in.</p>
+        <div class="tags">
+          <span class="tag">C#</span>
+          <span class="tag">ASP.NET Core</span>
+          <span class="tag">MVC</span>
+          <span class="tag">Entity Framework</span>
+          <span class="tag">MySQL</span>
+          <span class="tag">AutoMapper</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/HousienA/Auction-Webservice-AspNet" target="_blank">GitHub →</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-img">
+          <img src="images/projects/webshop-jakarta.png" alt="Webshop Jakarta EE" onerror="this.parentElement.style.display='none'">
+        </div>
+        <h3>Webshop — Jakarta EE</h3>
+        <p>Java-based e-commerce application built on a classic three-tier architecture. The presentation layer uses Servlets and JSP with JSTL/EL for dynamic HTML rendering. Business logic is encapsulated in service classes that orchestrate domain models (Product, Cart, Order, Customer) and manage transactions, while the data access layer interacts with the database through DAOs using JDBC. Supports user registration, product browsing, cart management, order placement, and order history with cancellation.</p>
+        <div class="tags">
+          <span class="tag">Java</span>
+          <span class="tag">Jakarta EE</span>
+          <span class="tag">Servlets</span>
+          <span class="tag">JSP</span>
+          <span class="tag">JDBC</span>
+          <span class="tag">Maven</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/HousienA/Webshop-JakartaEE" target="_blank">GitHub →</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-img">
+          <img src="images/projects/monkey-shooter.png" alt="MonkeyShooter Multiplayer Game" onerror="this.parentElement.style.display='none'">
+        </div>
+        <h3>MonkeyShooter</h3>
+        <p>Top-down arcade multiplayer shooter written from scratch in C with SDL2. A dedicated C server handles up to six simultaneous players over the network using SDL2_net, while the client renders sprites, text, and bullet physics through SDL2, SDL2_image, and SDL2_ttf. Shared game logic (characters, world, projectiles) lives in a common library used by both client and server, with build orchestrated through Makefiles targeting both Windows/MinGW and macOS.</p>
+        <div class="tags">
+          <span class="tag">C</span>
+          <span class="tag">SDL2</span>
+          <span class="tag">Networking</span>
+          <span class="tag">Multiplayer</span>
+          <span class="tag">Make</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/HousienA/MonkeyShooter" target="_blank">GitHub →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ======================== ML & AI ======================== -->
+  <div class="tab-panel" id="tab-ml-ai">
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-img">
+          <img src="images/projects/codeqna-rag.png" alt="CodeQnA RAG" onerror="this.parentElement.style.display='none'">
+        </div>
+        <h3>CodeQnA — RAG Codebase Assistant</h3>
+        <p>A tool that ingests any GitHub repository, indexes the codebase using a RAG pipeline, and lets you ask natural language questions about it — entirely locally with no API keys or cloud costs. Files are chunked using language-aware splitters (preserving function and class boundaries), embedded with all-MiniLM-L6-v2 into 384-dimensional vectors, and stored in ChromaDB. Queries use dual-path retrieval: semantic search over separate code and docs collections, plus filepath-aware lookup for structural questions. Answers are generated by Qwen 2.5 Coder 7B running locally via Ollama. Includes a Streamlit web UI with streaming responses and source attribution, plus a CLI for scripted use.</p>
+        <div class="tags">
+          <span class="tag">Python</span>
+          <span class="tag">LangChain</span>
+          <span class="tag">ChromaDB</span>
+          <span class="tag">Ollama</span>
+          <span class="tag">Sentence-Transformers</span>
+          <span class="tag">Streamlit</span>
+          <span class="tag">RAG</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/HousienA/CodeQnA-RAG" target="_blank">GitHub →</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-img">
+          <img src="images/projects/ecg-classification.png" alt="ECG Multi-Label Classification" onerror="this.parentElement.style.display='none'">
+        </div>
+        <h3>ECG Multi-Label Classification</h3>
+        <p>Deep learning pipeline for classifying 12-lead ECG recordings into cardiac diagnostic categories using the PTB-XL dataset (21,799 recordings). A 1D CNN (ECGNet, ~4M parameters) processes raw waveforms across 12 leads simultaneously, trained with BCEWithLogitsLoss and class-imbalance-weighted pos_weight. Achieves a macro F1 of 0.628 on the five clinical superclasses. Model interpretability is provided through SHAP DeepExplainer, which confirms the model attends to QRS complexes and prioritizes clinically relevant leads (Lead II, V2).</p>
+        <div class="tags">
+          <span class="tag">Python</span>
+          <span class="tag">PyTorch</span>
+          <span class="tag">CNN</span>
+          <span class="tag">SHAP</span>
+          <span class="tag">PTB-XL</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/HousienA/TimeSeriesECGLab" target="_blank">GitHub →</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-img">
+          <img src="images/projects/sepsis-prediction.png" alt="Sepsis Onset Prediction" onerror="this.parentElement.style.display='none'">
+        </div>
+        <h3>Sepsis Onset Prediction</h3>
+        <p>Time-series classification pipeline for early sepsis detection using clinical vital signs and lab values. Implemented a GRU recurrent network with Focal Loss to handle severe class imbalance in ICU data, optimized with AdamW. The model processes variable-length patient timelines and predicts sepsis onset, achieving an AUROC of approximately 0.946.</p>
+        <div class="tags">
+          <span class="tag">Python</span>
+          <span class="tag">PyTorch</span>
+          <span class="tag">GRU</span>
+          <span class="tag">Focal Loss</span>
+          <span class="tag">Time Series</span>
+        </div>
+        <div class="project-links">
+          <a href="#" target="_blank">GitHub →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ======================== MOBILE ======================== -->
+  <div class="tab-panel" id="tab-mobile">
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-img">
+          <img src="images/projects/workout-buddy.png" alt="WorkoutBuddy" onerror="this.parentElement.style.display='none'">
+        </div>
+        <h3>WorkoutBuddy</h3>
+        <p>Cross-platform fitness app for iOS, Android, and web, built with React Native and Expo Router. Users create and edit workout templates with customizable sets, reps, and weights, then run live sessions with an automatic rest timer and per-set logging. The analytics view breaks down weekly volume by muscle group and tracks progress over time using charts rendered via react-native-chart-kit. Offline-first persistence is handled through a dedicated StorageService on top of AsyncStorage, with hook-based view models keeping UI state predictable.</p>
+        <div class="tags">
+          <span class="tag">React Native</span>
+          <span class="tag">Expo</span>
+          <span class="tag">Expo Router</span>
+          <span class="tag">TypeScript</span>
+          <span class="tag">AsyncStorage</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/HousienA/WorkoutBuddy" target="_blank">GitHub →</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-img">
+          <img src="images/projects/weather-app.png" alt="Weather App Android" onerror="this.parentElement.style.display='none'">
+        </div>
+        <h3>Weather App Android</h3>
+        <p>Native Android weather app in Kotlin with a clean MVVM architecture. Uses Retrofit to talk to the Open-Meteo forecast and geocoding APIs, mapping free-text place names to coordinates before fetching daily forecasts. Features include favorite locations, offline caching with a last-updated indicator, and graceful degradation across network-error, offline-with-cache, and offline-no-cache states. Organized as <code>data/remote</code>, <code>data/local</code>, <code>data/repository</code>, <code>domain</code>, and <code>ui</code> layers with a single source of truth in the repository.</p>
+        <div class="tags">
+          <span class="tag">Kotlin</span>
+          <span class="tag">MVVM</span>
+          <span class="tag">Retrofit</span>
+          <span class="tag">Coroutines</span>
+          <span class="tag">Open-Meteo</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/HousienA/WeatherAppAndroid" target="_blank">GitHub →</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-img">
+          <img src="images/projects/nback.png" alt="N-Back Cognitive Training App" onerror="this.parentElement.style.display='none'">
+        </div>
+        <h3>N-Back Cognitive Training App</h3>
+        <p>Android app implementing the N-back working-memory paradigm, where the player must identify whether the current stimulus matches the one shown N steps earlier. Built in Kotlin with Jetpack Compose and MVVM, with stimulus sequences generated in a native C library bridged through JNI — the Kotlin side calls out through a <code>JniBridge</code> shared library, and the C code handles sequence construction and match distribution. Supports visual and audio game modes (audio via SoundPool), with high scores persisted through Jetpack DataStore.</p>
+        <div class="tags">
+          <span class="tag">Kotlin</span>
+          <span class="tag">Jetpack Compose</span>
+          <span class="tag">C</span>
+          <span class="tag">JNI</span>
+          <span class="tag">DataStore</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/HousienA/NBack_AndroidApp" target="_blank">GitHub →</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-img">
+          <img src="images/projects/shoulder-monitor.png" alt="ShoulderMonitor" onerror="this.parentElement.style.display='none'">
+        </div>
+        <h3>ShoulderMonitor</h3>
+        <p>Android app for tracking shoulder posture and movement using the device's built-in accelerometer and gyroscope sensors. Built with Kotlin and Jetpack Compose following MVVM, with a SensorViewModel that streams real-time sensor data to the UI through LiveData. Uses a repository pattern to manage sensor readings and a layered data/UI structure.</p>
+        <div class="tags">
+          <span class="tag">Kotlin</span>
+          <span class="tag">Jetpack Compose</span>
+          <span class="tag">Sensors</span>
+          <span class="tag">MVVM</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/HousienA/ShoulderMonitor" target="_blank">GitHub →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
 </section>
 
 <section id="skills">
@@ -601,7 +771,8 @@
       <h3>ML & Data</h3>
       <ul>
         <li>PyTorch</li>
-        <li>TensorFlow</li>
+        <li>LangChain</li>
+        <li>ChromaDB</li>
         <li>Scikit-learn</li>
         <li>pandas / NumPy</li>
       </ul>
@@ -645,6 +816,32 @@
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="emailjs-config.js"></script>
 <script>
+// Tab switching
+(function () {
+  const tabs = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.tab-panel');
+
+  tabs.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      tabs.forEach(function (t) { t.classList.remove('active'); });
+      panels.forEach(function (p) { p.classList.remove('active'); });
+
+      btn.classList.add('active');
+      var target = document.getElementById('tab-' + btn.dataset.tab);
+      target.classList.add('active');
+
+      // Re-trigger card animations
+      var cards = target.querySelectorAll('.project-card');
+      cards.forEach(function (card) {
+        card.style.animation = 'none';
+        card.offsetHeight; // force reflow
+        card.style.animation = '';
+      });
+    });
+  });
+})();
+
+// Contact form
 (function () {
   const emailInput   = document.getElementById('contact-email');
   const emailStatus  = document.getElementById('email-status');
@@ -701,7 +898,7 @@
       setStatus('valid', '✓', 'Valid email ');
     } else {
       setStatus('warning', '⚠', 'This email domain may not exist');
-      emailValid = true; // warn but still allow submit
+      emailValid = true;
     }
   }
 
