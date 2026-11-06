@@ -1,0 +1,26 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>Sending file</title>
+<body style="font:14px sans-serif;padding:16px">Sending file...
+<script>
+  // Opened as a popup by a job application page. Fetches the CV from this
+  // folder and posts it back to the page that opened it, then closes.
+  const which = new URLSearchParams(location.search).get("f") === "se" ? "cv-se.pdf" : "cv-ae.pdf";
+  if (!window.opener) {
+    document.body.textContent = "No opener window.";
+  } else {
+    fetch(which, { cache: "no-store" })
+      .then((r) => { if (!r.ok) throw new Error("HTTP " + r.status); return r.arrayBuffer(); })
+      .then((buf) => {
+        window.opener.postMessage({ type: "cv-file", name: "Housien_Alsabag_CV.pdf", buf }, "*", [buf]);
+        document.body.textContent = "Sent.";
+        setTimeout(() => window.close(), 400);
+      })
+      .catch((e) => {
+        window.opener.postMessage({ type: "cv-error", error: String(e) }, "*");
+        document.body.textContent = "Error: " + e;
+      });
+  }
+</script>
+</body>
